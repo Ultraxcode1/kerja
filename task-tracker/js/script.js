@@ -4,7 +4,11 @@ function initTaskTracker() {
         return;
     }
 
-    const seedTasks = [ { "week": 1, "date": "16/06/2025", "task": "Modeling Brake Pad", "status": "Done" }, { "week": 1, "date": "16/06/2025", "task": "Animasi Render", "status": "Done" }, { "week": 1, "date": "17/06/2025", "task": "Modeling Azure", "status": "Done" }, { "week": 1, "date": "18/06/2025", "task": "Modeling Side Step", "status": "50%" }, { "week": 1, "date": "18/06/2025", "task": "Animasi Azure", "status": "Done" }, { "week": 1, "date": "19/06/2025", "task": "Modeling Side Step", "status": "Done" }, { "week": 1, "date": "19/06/2025", "task": "Modeling Mirror DVR", "status": "75%" }, { "week": 1, "date": "20/06/2025", "task": "Modeling Mirror DVR", "status": "Done" }, { "week": 1, "date": "20/06/2025", "task": "Animasi Mirror DVR", "status": "Done" }, { "week": 2, "date": "23/06/2025", "task": "Compositing Mirror DVR", "status": "Done" }, { "week": 2, "date": "23/06/2025", "task": "Modeling Console Box", "status": "Done" }, { "week": 2, "date": "24/06/2025", "task": "Compositing Azure Marketplace", "status": "Done" }, { "week": 2, "date": "25/06/2025", "task": "Modeling Car Fridge", "status": "50%" }, { "week": 2, "date": "26/06/2025", "task": "Modeling Car Fridge", "status": "Done" }, { "week": 2, "date": "26/06/2025", "task": "Animasi Car Fridge", "status": "20%" }, { "week": 3, "date": "30/06/2025", "task": "Modeling Cup Holder", "status": "Done" }, { "week": 3, "date": "30/06/2025", "task": "Animasi Car fridge", "status": "40%" }, { "week": 3, "date": "01/07/2025", "task": "Animasi Car Fridge", "status": "60%" }, { "week": 3, "date": "02/07/2025", "task": "Animasi Car Fridge", "status": "80%" }, { "week": 3, "date": "03/07/2025", "task": "Animasi Car Fridge", "status": "Render" }, { "week": 3, "date": "03/07/2025", "task": "Modeling BS_Mirror", "status": "Done" }, { "week": 3, "date": "04/07/2025", "task": "Modeling Backseat Storage", "status": "Done" }, { "week": 3, "date": "04/07/2025", "task": "Rev_Animasi_Mirror DVR", "status": "Done" }, { "week": 4, "date": "07/07/2025", "task": "Modeling Car Suction", "status": "Done" }, { "week": 4, "date": "07/07/2025", "task": "Rev_Backseat Storage", "status": "Done" }, { "week": 4, "date": "08/07/2025", "task": "Absen", "status": "" }, { "week": 4, "date": "09/07/2025", "task": "Rev_Rendering Car Fridge", "status": "Done" }, { "week": 4, "date": "09/07/2025", "task": "Rev_Azure Comp", "status": "Done" }, { "week": 4, "date": "10/07/2025", "task": "Modeling Horn", "status": "Done" }, { "week": 4, "date": "10/07/2025", "task": "Rev_Azure Rendering", "status": "60%" }, { "week": 4, "date": "11/07/2025", "task": "Kompilasi Azure", "status": "Done" }, { "week": 5, "date": "14/07/2025", "task": "Modeling Horn XT3 dan XT5", "status": "Done" }, { "week": 5, "date": "14/07/2025", "task": "Display Horn", "status": "Done" }, { "week": 5, "date": "14/07/2025", "task": "Side Step Jimny", "status": "Render" }, { "week": 5, "date": "14/07/2025", "task": "Rev_Car Fridge", "status": "Render" }, { "week": 5, "date": "15/07/2025", "task": "Animasi Side Step Jimny", "status": "75%" }, { "week": 5, "date": "15/07/2025", "task": "Rev_Display Horn", "status": "Done" }, { "week": 5, "date": "16/07/2025", "task": "Animasi Side Step Jimny", "status": "Done" }, { "week": 5, "date": "16/07/2025", "task": "Render Side Step Jimny", "status": "25%" }, { "week": 5, "date": "17/07/2025", "task": "Finishing", "status": "" }, { "week": 5, "date": "18/08/2025", "task": "Modeling Dashcam", "status": "Done" }, { "week": 6, "date": "21/07/2025", "task": "Car Mirror", "status": "Done" }, { "week": 6, "date": "22/07/2025", "task": "Modeling Car Head Unit AI 2", "status": "Done" }, { "week": 6, "date": "23/07/2025", "task": "Animasi Car Fridge", "status": "Done" }, { "week": 6, "date": "24/07/2025", "task": "Render Car Fridge", "status": "Done" }, { "week": 6, "date": "25/07/2025", "task": "Car Fridge finishing", "status": "Done" }, { "week": 7, "date": "28/07/2025", "task": "Car Head Unit AI 2_Texturing", "status": "Done" }, { "week": 7, "date": "28/07/2025", "task": "Modeling Car Message chair", "status": "50%" }, { "week": 7, "date": "29/07/2025", "task": "Animasi Bumper Logo", "status": "Done" }, { "week": 7, "date": "30/07/2025", "task": "Modeling Net SHield", "status": "Done" }, { "week": 7, "date": "30/07/2025", "task": "Animasi UI Head Unit", "status": "40%" }, { "week": 7, "date": "31/07/2025", "task": "Modeling All part BYD Atto 1", "status": "Done" }, { "week": 7, "date": "31/07/2025", "task": "Modeling Head rest", "status": "70%" }, { "week": 7, "date": "01/08/2025", "task": "Modeling Head rest", "status": "Done" }, { "week": 8, "date": "04/08/2025", "task": "Modeling Ball Join", "status": "Done" }, { "week": 8, "date": "04/08/2025", "task": "Modeling Tierod", "status": "Done" }, { "week": 8, "date": "04/08/2025", "task": "Modeling Rackend", "status": "Done" }, { "week": 8, "date": "05/08/2025", "task": "Render Ball Join,Tierod", "status": "Done" }, { "week": 8, "date": "05/08/2025", "task": "Modeling Stabilizer Link", "status": "Done" }, { "week": 8, "date": "06/08/2025", "task": "Render car suction phone holder", "status": "Done" }, { "week": 8, "date": "07/08/2025", "task": "Modeling Cup Holder Zenix", "status": "Done" }, { "week": 8, "date": "08/08/2025", "task": "Modeling Silicone dashboard console", "status": "Done" }, { "week": 9, "date": "11/08/2025", "task": "Modeling Silicone Console Box Multitray", "status": "Done" }, { "week": 9, "date": "11/08/2025", "task": "Rev_Rackend", "status": "DOne" }, { "week": 9, "date": "11/08/2025", "task": "Rev_Stabilizer Link", "status": "Done" }, { "week": 12, "date": "04/09/2025", "task": "Modelling Rear Cup Holder", "status": "Done" }, { "week": 12, "date": "04/09/2025", "task": "Modelling Door Armrest Grip", "status": "Done" }, { "week": 12, "date": "04/09/2025", "task": "Render Rear Cup Holder", "status": "Done" }, { "week": 12, "date": "04/09/2025", "task": "Render Door Armrest Grip", "status": "Done" }, { "week": 12, "date": "04/09/2025", "task": "Modelling Triple Hook Hanger Headrest", "status": "75%" }, { "week": 13, "date": "08/09/2025", "task": "Modelling Trash Bin", "status": "Done" }, { "week": 13, "date": "08/09/2025", "task": "Modelling Triple Hook Hanger Headrest", "status": "Done" }, { "week": 13, "date": "08/09/2025", "task": "Render Triple Hook Hanger Headrest", "status": "Done" }, { "week": 13, "date": "08/09/202.5", "task": "Render Trash Bin", "status": "Done" }, { "week": 13, "date": "08/09/2025", "task": "Modelling Seat gap filler", "status": "Done" }, { "week": 13, "date": "08/09/2025", "task": "Render Seat Gap Fille", "status": "Done" }, { "week": 13, "date": "09/09/2025", "task": "Modelling Headrest Storage", "status": "Done" }, { "week": 13, "date": "09/09/2025", "task": "Render Headrest Storage", "status": "Done" }, { "week": 13, "date": "10/09/2025", "task": "Modelling Cabin Light", "status": "DOne" }, { "week": 13, "date": "10/09/2025", "task": "Rendering Cabin Light", "status": "Done" }, { "week": 13, "date": "11/09/2025", "task": "Modelling Steer skin", "status": "Done" }, { "week": 13, "date": "11/09/2025", "task": "Rendering Steer Skin", "status": "Done" }];
+    // --- PERUBAHAN DI SINI ---
+    // Data contoh dikosongkan agar Task Tracker dimulai dari awal.
+    const seedTasks = [];
+
+    // --- Sisa kode dari sebelumnya (tidak perlu diubah) ---
     const userTasks = loadJSON('custom_tasks', []);
     const importantMap = loadJSON('important_tasks', {});
     const seedOverrides = loadJSON('seed_overrides', {});
@@ -105,7 +109,7 @@ function initTaskTracker() {
         els.dayFilter.disabled=false;
         const key = `${state.year}-${state.month}`;
         const days = daysByYearMonth[key] || [];
-        days.forEach(d => els.dayFilter.insertAdjacentHTML('beforeend', `<option value="${String(d).padStart(2,'0')}">${d}</option>`));
+        days.forEach(d => els.dayFilter.insertAdjacentHTML('beforeend', `<option value="${String(d).padStart(2,'0')}">${d}</option>`);
         els.dayFilter.value = state.day;
     }
     
@@ -192,8 +196,6 @@ function initTaskTracker() {
             <span class="text-xs font-semibold">${avg}%</span>
         </div>`;
     }
-
-    // --- FUNGSI KALENDER DIPERBAIKI ---
     function toDateStr(d){ return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear(); }
     function sameDay(a,b){ return a && b && a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
 
@@ -236,7 +238,7 @@ function initTaskTracker() {
 
             cellDiv.addEventListener('click', ()=>{
                 state.calendarSelected = dateObj;
-                buildCalendar(); // Re-render untuk highlight
+                buildCalendar(); 
                 updateCalendarDayTasks();
             });
             els.calGrid.appendChild(cellDiv);
@@ -311,7 +313,6 @@ function initTaskTracker() {
         renderTasks();
     }
 
-    // --- INISIALISASI DAN EVENT LISTENERS ---
     rebuildDerived();
     renderStatusFilters();
     renderDateFilters();
