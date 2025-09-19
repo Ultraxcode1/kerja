@@ -1,14 +1,10 @@
 function initTaskTracker() {
-    // Cek apakah inisialisasi sudah pernah dijalankan
+    // Cek apakah inisialisasi sudah pernah dijalankan untuk mencegah duplikasi
     if (document.getElementById('task-container')?.dataset.initialized) {
         return;
     }
 
-    // --- PERUBAHAN DI SINI ---
-    // Data contoh dikosongkan agar Task Tracker dimulai dari awal.
-    const seedTasks = [];
-
-    // --- Sisa kode dari sebelumnya (tidak perlu diubah) ---
+    const seedTasks = []; // Dimulai dari kosong
     const userTasks = loadJSON('custom_tasks', []);
     const importantMap = loadJSON('important_tasks', {});
     const seedOverrides = loadJSON('seed_overrides', {});
@@ -58,7 +54,7 @@ function initTaskTracker() {
     }
 
     const els = {
-        taskList: document.getElementById('task-list'), empty: document.getElementById('empty-state'), search: document.getElementById('search'), statusFilters: document.getElementById('status-filters'), clearFilters: document.getElementById('clear-filters'), progress: document.getElementById('overall-progress'), toggleView: document.getElementById('toggle-view'), yearFilter: document.getElementById('year-filter'), monthFilter: document.getElementById('month-filter'), dayFilter: document.getElementById('day-filter'), addTaskBtn: document.getElementById('add-task'), modalOverlay: document.getElementById('modal-overlay'), modalClose: document.getElementById('modal-close'), taskForm: document.getElementById('task-form'), taskDate: document.getElementById('task-date'), taskName: document.getElementById('task-name'), taskStatus: document.getElementById('task-status'), taskImportant: document.getElementById('task-important'), taskWeek: document.getElementById('task-week'), taskDir: document.getElementById('task-dir'), importantFilter: document.getElementById('important-filter'), calendarToggle: document.getElementById('calendar-toggle'), calendarView: document.getElementById('calendar-view'), taskViewWrapper: document.getElementById('task-view-wrapper'), calPrev: document.getElementById('cal-prev'), calNext: document.getElementById('cal-next'), calToday: document.getElementById('cal-today'), calTitle: document.getElementById('cal-title'), calGrid: document.getElementById('cal-grid'), calDayTitle: document.getElementById('cal-day-title'), calDayTasks: document.getElementById('cal-day-tasks'), addTaskDay: document.getElementById('add-task-day'),
+        taskList: document.getElementById('task-list'), empty: document.getElementById('empty-state'), search: document.getElementById('search'), statusFilters: document.getElementById('status-filters'), clearFilters: document.getElementById('clear-filters'), progress: document.getElementById('overall-progress'), toggleView: document.getElementById('toggle-view'), yearFilter: document.getElementById('year-filter'), monthFilter: document.getElementById('month-filter'), dayFilter: document.getElementById('day-filter'), addTaskBtn: document.getElementById('add-task'), modalOverlay: document.getElementById('modal-overlay'), modalClose: document.getElementById('modal-close'), taskForm: document.getElementById('task-form'), taskDate: document.getElementById('task-date'), taskName: document.getElementById('task-name'), taskStatus: document.getElementById('task-status'), taskImportant: document.getElementById('task-important'), taskWeek: document.getElementById('task-week'), taskDir: document.getElementById('task-dir'), importantFilter: document.getElementById('important-filter'), calendarToggle: document.getElementById('calendar-toggle'), calendarView: document.getElementById('calendar-view'), taskViewWrapper: document.getElementById('task-view-wrapper'), calPrev: document.getElementById('cal-prev'), calNext: document.getElementById('cal-next'), calToday: document.getElementById('cal-today'), calTitle: document.getElementById('cal-title'), calGrid: document.getElementById('cal-grid'), calDayTitle: document.getElementById('cal-day-title'), calDayTasks: document.getElementById('cal-day-tasks'), addTaskDay: document.getElementById('add-task-day'), btnCancel: document.getElementById('btn-cancel'),
     };
 
     if (!els.taskList) { console.error("Task Tracker init failed: elements not found."); return; }
@@ -269,19 +265,19 @@ function initTaskTracker() {
         });
     }
 
-    function openModal(){ els.modalOverlay.classList.remove('hidden'); }
-    function closeModal(){ els.modalOverlay.classList.add('hidden'); }
+    function openModal(){ if(els.modalOverlay) els.modalOverlay.classList.remove('hidden'); }
+    function closeModal(){ if(els.modalOverlay) els.modalOverlay.classList.add('hidden'); }
     
     function startEditTask(task) {
         state.editingTaskId = generateTaskId(task);
         const modalTitle = document.getElementById('modal-title');
         if (modalTitle) modalTitle.textContent = "Edit Task";
         const d = parseDateStr(task.date);
-        if (d) els.taskDate.value = d.toISOString().slice(0,10);
-        els.taskName.value = task.task;
-        els.taskStatus.value = task.status || '0%';
-        els.taskImportant.checked = !!importantMap[state.editingTaskId];
-        els.taskWeek.value = task.week || '';
+        if (d && els.taskDate) els.taskDate.value = d.toISOString().slice(0,10);
+        if (els.taskName) els.taskName.value = task.task;
+        if (els.taskStatus) els.taskStatus.value = task.status || '0%';
+        if (els.taskImportant) els.taskImportant.checked = !!importantMap[state.editingTaskId];
+        if (els.taskWeek) els.taskWeek.value = task.week || '';
         if (els.taskDir) els.taskDir.value = task.dir || '';
         openModal();
     }
@@ -303,6 +299,7 @@ function initTaskTracker() {
         tasks = buildAllTasks();
         rebuildDerived();
         renderTasks();
+        buildCalendar();
     }
     
     function toggleImportant(task) {
@@ -313,6 +310,7 @@ function initTaskTracker() {
         renderTasks();
     }
 
+    // --- INISIALISASI DAN EVENT LISTENERS ---
     rebuildDerived();
     renderStatusFilters();
     renderDateFilters();
@@ -320,16 +318,17 @@ function initTaskTracker() {
     buildCalendar();
     updateCalendarDayTasks();
     
-    els.search.addEventListener('input', e => { state.search = e.target.value.trim(); renderTasks(); });
-    els.addTaskBtn.addEventListener('click', () => {
+    if(els.search) els.search.addEventListener('input', e => { state.search = e.target.value.trim(); renderTasks(); });
+    if(els.addTaskBtn) els.addTaskBtn.addEventListener('click', () => {
         state.editingTaskId = null;
         const modalTitle = document.getElementById('modal-title');
         if(modalTitle) modalTitle.textContent = "Tambah Task Harian";
-        els.taskForm.reset();
+        if(els.taskForm) els.taskForm.reset();
         openModal();
     });
-    els.modalClose.addEventListener('click', closeModal);
-    els.taskForm.addEventListener('submit', (e) => {
+    if(els.modalClose) els.modalClose.addEventListener('click', closeModal);
+    if(els.btnCancel) els.btnCancel.addEventListener('click', closeModal);
+    if(els.taskForm) els.taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const dateVal = els.taskDate.value;
         const [y,m,d] = dateVal.split('-');
@@ -371,10 +370,10 @@ function initTaskTracker() {
         closeModal();
     });
     
-    els.calendarToggle.addEventListener('click', ()=>{
+    if(els.calendarToggle) els.calendarToggle.addEventListener('click', ()=>{
         state.calendarVisible = !state.calendarVisible;
-        els.calendarView.classList.toggle('hidden', !state.calendarVisible);
-        els.taskViewWrapper.classList.toggle('hidden', state.calendarVisible);
+        if (els.calendarView) els.calendarView.classList.toggle('hidden', !state.calendarVisible);
+        if (els.taskViewWrapper) els.taskViewWrapper.classList.toggle('hidden', state.calendarVisible);
     });
 
     if (els.calPrev) {
