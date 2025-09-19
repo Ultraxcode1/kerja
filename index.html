@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.19.3/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="task-tracker/css/style.css" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#eef6ff",
+                100: "#d9ecff",
+                200: "#b5dcff",
+                300: "#82c5ff",
+                400: "#47a5ff",
+                500: "#1d87f5",
+                600: "#0c6bd8",
+                700: "#0b56ac",
+                800: "#0f498b",
+                900: "#123e70",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      #profile-picture {
+        transition: all 0.2s ease-in-out;
+      }
+      #profile-picture:hover {
+        opacity: 0.8;
+        outline: 3px solid #4a69e2;
+        outline-offset: 2px;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f7ff;
+      }
+      .active {
+        background-color: #e9f0ff;
+        color: #4a69e2;
+        border-left: 3px solid #4a69e2;
+      }
+    </style>
+  </head>
+  <body class="bg-[#F3F7FF]">
+    <div class="flex h-screen p-4">
+      <div class="bg-white rounded-2xl flex w-full shadow-lg overflow-hidden">
+        <aside class="w-1/5 p-6 flex flex-col flex-shrink-0">
+          <div class="flex items-center gap-3 mb-10">
+            <div
+              class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-xl"
+            >
+              K
+            </div>
+            <h1 class="text-2xl font-bold text-gray-800">KERJA!</h1>
+          </div>
+          <nav id="sidebar-nav" class="flex flex-col gap-1">
+            <a
+              href="#"
+              data-target="page-dashboard"
+              class="nav-item flex items-center gap-4 text-gray-500 font-medium px-4 py-3 rounded-lg hover:bg-gray-100 active transition-colors duration-200"
+              ><i class="fas fa-th-large w-5"></i>Dashboard</a
+            >
+            <div>
+              <button
+                id="tracker-menu-button"
+                class="w-full flex items-center justify-between text-gray-500 font-medium px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              >
+                <div class="flex items-center gap-4">
+                  <i class="fas fa-chart-pie w-5"></i><span>Tracker</span>
+                </div>
+                <i
+                  id="tracker-arrow-icon"
+                  class="fas fa-chevron-down text-xs transition-transform duration-200"
+                ></i>
+              </button>
+              <div
+                id="tracker-submenu"
+                class="hidden mt-1 pl-8 flex flex-col gap-1"
+              >
+                <a
+                  href="#"
+                  data-target="page-task-tracker"
+                  data-source="task-tracker/task.html"
+                  class="nav-item flex items-center gap-4 text-gray-500 font-medium px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+                  ><i class="fas fa-tasks w-5"></i>Task Tracker</a
+                >
+                <a
+                  href="#"
+                  data-target="page-money-tracker"
+                  class="nav-item flex items-center gap-4 text-gray-500 font-medium px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+                  ><i class="fas fa-wallet w-5"></i>Money Tracker</a
+                >
+              </div>
+            </div>
+            <div class="border-t border-gray-200 my-2"></div>
+            <a
+              href="#"
+              data-target="page-documents"
+              class="nav-item flex items-center gap-4 text-gray-500 font-medium px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              ><i class="fas fa-file-alt w-5"></i>Documents</a
+            >
+            <a
+              href="#"
+              data-target="page-images"
+              class="nav-item flex items-center gap-4 text-gray-500 font-medium px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              ><i class="fas fa-image w-5"></i>Images</a
+            >
+            <a
+              href="#"
+              data-target="page-video"
+              class="nav-item flex items-center gap-4 text-gray-500 font-medium px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              ><i class="fas fa-video w-5"></i>Video, Audio</a
+            >
+          </nav>
+          <div class="mt-auto">
+            <img
+              src="https://cdni.iconscout.com/illustration/premium/thumb/file-searching-3488523-2923983.png"
+              alt="File Searching Illustration"
+            />
+          </div>
+        </aside>
+
+        <main
+          class="w-4/5 p-8 bg-[#FDFEFF] rounded-r-2xl relative flex flex-col"
+        >
+          <header class="flex items-center justify-between mb-8 flex-shrink-0">
+            <div class="relative w-1/3">
+              <i
+                class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              ></i
+              ><input
+                type="text"
+                placeholder="Search..."
+                class="bg-gray-100 rounded-lg pl-12 pr-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div class="flex items-center gap-6">
+              <button
+                id="upload-button"
+                class="bg-blue-500 text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-blue-600"
+              >
+                <i class="fas fa-upload"></i>Upload
+              </button>
+              <div class="relative">
+                <button
+                  id="user-menu-button"
+                  class="flex items-center gap-3 cursor-pointer"
+                >
+                  <img
+                    id="profile-picture"
+                    src="https://randomuser.me/api/portraits/men/32.jpg"
+                    alt="User Avatar"
+                    class="w-10 h-10 rounded-full cursor-pointer object-cover"
+                    title="Klik untuk ganti foto"
+                  />
+                  <input
+                    type="file"
+                    id="profile-upload"
+                    class="hidden"
+                    accept="image/png, image/jpeg, image/gif"
+                  />
+                  <span class="font-semibold">Asif</span>
+                </button>
+                <div
+                  id="user-menu"
+                  class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-10"
+                >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    >Profil Saya</a
+                  >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    >Pengaturan</a
+                  >
+                  <div class="border-t border-gray-200 my-1"></div>
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-red-500 hover:bg-gray-100"
+                    >Keluar</a
+                  >
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div id="content-area" class="flex-1 overflow-y-auto">
+            <div id="page-dashboard" class="page-content">
+              <h2 class="text-3xl font-bold text-gray-800">Dashboard</h2>
+              <p class="text-gray-500 mt-1">
+                Ringkasan aktivitas Anda hari ini.
+              </p>
+
+              <div
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6"
+              >
+                <div
+                  class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4"
+                >
+                  <div class="bg-blue-100 text-blue-600 p-3 rounded-lg">
+                    <i class="fas fa-tasks fa-lg"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Tugas Hari Ini</p>
+                    <p
+                      id="today-tasks-count"
+                      class="text-2xl font-bold text-gray-800"
+                    >
+                      0 Tugas
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4"
+                >
+                  <div class="bg-green-100 text-green-600 p-3 rounded-lg">
+                    <i class="fas fa-wallet fa-lg"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Saldo Bulan Ini</p>
+                    <p class="text-2xl font-bold text-gray-800">Rp 5.250.000</p>
+                  </div>
+                </div>
+                <div
+                  class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4"
+                >
+                  <div class="bg-yellow-100 text-yellow-600 p-3 rounded-lg">
+                    <i class="fas fa-file-alt fa-lg"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">File Terbaru</p>
+                    <p class="text-2xl font-bold text-gray-800">3 File</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+                <div
+                  class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100"
+                >
+                  <h3 class="font-semibold text-gray-800 mb-4">
+                    Aktivitas 7 Hari Terakhir
+                  </h3>
+                  <div><canvas id="weeklyActivityChart"></canvas></div>
+                </div>
+
+                <div
+                  class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col"
+                >
+                  <h3 class="font-semibold text-gray-800 mb-4">
+                    Prioritas Utama / Catatan
+                  </h3>
+                  <ul id="priorities-list" class="space-y-3 flex-1"></ul>
+                  <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="flex gap-2">
+                      <input
+                        type="text"
+                        id="new-priority-input"
+                        placeholder="Tulis prioritas baru..."
+                        class="flex-1 w-full px-3 py-2 text-sm rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <button
+                        id="add-priority-btn"
+                        class="px-4 py-2 text-sm rounded-md bg-blue-500 text-white hover:bg-blue-600"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="page-task-tracker"
+              class="page-content hidden h-full"
+            ></div>
+
+            <div id="page-money-tracker" class="page-content hidden">
+              <h2 class="text-3xl font-bold text-gray-800">Money Tracker</h2>
+              <p class="text-gray-500 mt-4">
+                Fitur ini sedang dalam pengembangan.
+              </p>
+            </div>
+
+            <div id="page-documents" class="page-content hidden">
+              <h2 class="text-3xl font-bold text-gray-800">Documents</h2>
+              <p class="text-gray-500 mt-4">
+                Fitur ini sedang dalam pengembangan.
+              </p>
+            </div>
+
+            <div id="page-images" class="page-content hidden"></div>
+            <div id="page-video" class="page-content hidden"></div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="task-tracker/js/script.js"></script>
+  </body>
+</html>
